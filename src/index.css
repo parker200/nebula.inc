@@ -1,0 +1,408 @@
+@import "tailwindcss";
+
+/* NÉBULA SEGURIDAD INTELIGENTE - DESIGN SYSTEM "DARK CYBER TECH" */
+
+:root {
+  --bg-abyssal: #050811;
+  --bg-deep-navy: #0a1128;
+  --bg-card: rgba(15, 23, 42, 0.75);
+  --bg-card-hover: rgba(22, 33, 62, 0.85);
+  --border-glass: rgba(56, 189, 248, 0.15);
+  --border-glass-bright: rgba(56, 189, 248, 0.35);
+  
+  /* SINGLE DOMINANT ACCENT TOKEN (Cyan/Celeste de Marca) */
+  --accent: #38bdf8;
+  --accent-hover: #0ea5e9;
+  --accent-glow: rgba(56, 189, 248, 0.25);
+  --cyan-neon: var(--accent);
+  --blue-electric: #0284c7;
+  
+  /* STRICTLY SEMANTIC COLORS ONLY */
+  --green-tactical: #10b981; /* Solo: En línea / Disponible / Operativo */
+  --red-alert: #ef4444;       /* Solo: Intrusión / Falla crítica / Amenaza */
+  --amber-warning: #f59e0b;   /* Solo: Advertencia real confirmada */
+  
+  --text-primary: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+  
+  --font-main: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-hud: 'Orbitron', monospace;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--bg-abyssal);
+  color: var(--text-primary);
+  line-height: 1.7;
+  overflow-x: hidden;
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.05) 0%, transparent 50%),
+    linear-gradient(rgba(56, 189, 248, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(56, 189, 248, 0.02) 1px, transparent 1px);
+  background-size: 100% 100%, 48px 48px, 48px 48px;
+  background-position: 0 0, -1px -1px, -1px -1px;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-abyssal);
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 4px;
+  border: 1px solid rgba(56, 189, 248, 0.2);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+/* Typography Hierarchy Helpers with Generous Breathing Room */
+.font-heading {
+  font-family: var(--font-main);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+}
+
+.font-hud {
+  font-family: var(--font-hud);
+  letter-spacing: 0.08em;
+  line-height: 1.25;
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* Explicit Section Typography & Hierarchy Standards */
+.section-header-block {
+  text-align: center;
+  max-width: 52rem;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 2.5rem;
+}
+@media (min-width: 768px) {
+  .section-header-block {
+    margin-bottom: 4rem;
+  }
+}
+
+.section-title {
+  font-family: var(--font-main);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.25;
+  color: #ffffff;
+  margin-bottom: 1.25rem;
+}
+
+.section-subtitle {
+  font-size: 0.95rem;
+  line-height: 1.75;
+  color: #94a3b8;
+  max-width: 44rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+@media (min-width: 640px) {
+  .section-subtitle {
+    font-size: 1.05rem;
+    line-height: 1.85;
+  }
+}
+
+.section-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  background: rgba(15, 23, 42, 0.85);
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.15);
+}
+
+/* Paragraph and Body Typography Spacing Defaults */
+p {
+  line-height: 1.75;
+}
+
+/* Section Anchor Offset for Fixed Navbar */
+section[id] {
+  scroll-margin-top: 5rem;
+}
+
+/* Explicit Section Padding for Responsive Breathing Room */
+.section-wrapper {
+  padding-top: 4.5rem;
+  padding-bottom: 4.5rem;
+  position: relative;
+}
+@media (min-width: 640px) {
+  .section-wrapper {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+}
+@media (min-width: 1024px) {
+  .section-wrapper {
+    padding-top: 7.5rem;
+    padding-bottom: 7.5rem;
+  }
+}
+
+/* Container */
+.container-custom {
+  max-width: 1240px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+@media (min-width: 640px) {
+  .container-custom {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+/* Glassmorphism Classes */
+.glass-panel {
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-glass);
+  box-shadow: 0 10px 35px 0 rgba(0, 0, 0, 0.45);
+}
+
+.glass-panel-hover {
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.glass-panel-hover:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-glass-bright);
+  box-shadow: 0 16px 45px -10px rgba(56, 189, 248, 0.25);
+  transform: translateY(-4px);
+}
+
+/* Standardized Button Hierarchy */
+/* 1. Primary CTA: Filled single dominant accent */
+.btn-primary-glow {
+  background-color: var(--accent);
+  color: #050811;
+  font-weight: 800;
+  border: 1px solid var(--accent);
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.35);
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+.btn-primary-glow:hover {
+  background-color: var(--accent-hover);
+  border-color: var(--accent-hover);
+  box-shadow: 0 0 28px rgba(56, 189, 248, 0.55);
+  transform: translateY(-2px);
+  color: #050811;
+}
+.btn-primary-glow:active {
+  transform: translateY(0);
+}
+
+/* 2. Secondary CTA: Outline, transparent, no solid fill */
+.btn-secondary-tactical {
+  background: transparent;
+  color: #e2e8f0;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  backdrop-filter: blur(8px);
+  transition: all 0.25s ease;
+}
+.btn-secondary-tactical:hover {
+  border-color: var(--accent);
+  background: rgba(56, 189, 248, 0.08);
+  color: #ffffff;
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.2);
+}
+
+/* WhatsApp Floating Button */
+.whatsapp-floating {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.75rem 1.15rem;
+  border-radius: 9999px;
+  background: #10b981;
+  color: #ffffff;
+  font-weight: 700;
+  box-shadow: 0 8px 25px -4px rgba(16, 185, 129, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  text-decoration: none;
+}
+.whatsapp-floating:hover {
+  background: #059669;
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 12px 28px -4px rgba(16, 185, 129, 0.6);
+}
+
+/* Tactical Pulse Dot (Semantic: Online / System Active) */
+.tactical-pulse-green {
+  width: 8px;
+  height: 8px;
+  background-color: var(--green-tactical);
+  border-radius: 50%;
+  position: relative;
+  display: inline-block;
+}
+.tactical-pulse-green::after {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border-radius: 50%;
+  background: rgba(16, 185, 129, 0.4);
+  animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.8); opacity: 0.9; }
+  70% { transform: scale(2.2); opacity: 0; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
+/* Alarm Red Pulse (Semantic: Confirmed Intrusion Alert) */
+.tactical-pulse-red {
+  animation: alert-flash 0.8s infinite alternate;
+}
+@keyframes alert-flash {
+  from {
+    background-color: rgba(239, 68, 68, 0.2);
+    border-color: rgba(239, 68, 68, 0.8);
+    box-shadow: 0 0 25px rgba(239, 68, 68, 0.4);
+  }
+  to {
+    background-color: rgba(239, 68, 68, 0.05);
+    border-color: rgba(239, 68, 68, 0.3);
+    box-shadow: 0 0 8px rgba(239, 68, 68, 0.1);
+  }
+}
+
+/* Smoke and Fog Simulator Effect */
+.fog-layer-1 {
+  background: radial-gradient(circle at 40% 50%, rgba(241, 245, 249, 0.98), rgba(203, 213, 225, 0.95), transparent 85%);
+  filter: blur(16px);
+  animation: fog-drift-1 4s ease-in-out infinite alternate;
+}
+.fog-layer-2 {
+  background: radial-gradient(circle at 65% 45%, rgba(226, 232, 240, 0.96), rgba(148, 163, 184, 0.92), transparent 80%);
+  filter: blur(20px);
+  animation: fog-drift-2 5s ease-in-out infinite alternate;
+}
+.fog-layer-3 {
+  background: radial-gradient(circle at 50% 60%, rgba(255, 255, 255, 0.97), rgba(203, 213, 225, 0.94), transparent 75%);
+  filter: blur(12px);
+  animation: fog-drift-3 3.5s ease-in-out infinite alternate;
+}
+
+@keyframes fog-drift-1 {
+  0% { transform: scale(1) translate(-2%, -2%); opacity: 0.95; }
+  100% { transform: scale(1.08) translate(3%, 2%); opacity: 0.99; }
+}
+@keyframes fog-drift-2 {
+  0% { transform: scale(1.05) translate(2%, 3%); opacity: 0.92; }
+  100% { transform: scale(0.97) translate(-3%, -2%); opacity: 0.98; }
+}
+@keyframes fog-drift-3 {
+  0% { transform: scale(0.98) translate(-1%, 2%); opacity: 0.94; }
+  100% { transform: scale(1.06) translate(2%, -1%); opacity: 0.99; }
+}
+
+/* Scanline Overlay for Tactical Camera Display */
+.scanlines {
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 0, 0, 0.25) 50%
+  );
+  background-size: 100% 4px;
+  pointer-events: none;
+}
+
+/* Replaced split gradient text with solid accent color token */
+.text-gradient-cyan {
+  color: var(--accent);
+}
+
+.text-gradient-fire {
+  color: var(--red-alert);
+}
+
+/* Custom Range Slider */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  background: #1e293b;
+  border-radius: 9999px;
+  outline: none;
+  border: 1px solid rgba(56, 189, 248, 0.2);
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #38bdf8;
+  cursor: pointer;
+  box-shadow: 0 0 12px #38bdf8, 0 0 20px rgba(56, 189, 248, 0.6);
+  border: 2px solid #ffffff;
+  transition: transform 0.15s ease;
+}
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+/* Radar Animation */
+.radar-sweep {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200%;
+  height: 200%;
+  transform-origin: 0 0;
+  background: conic-gradient(from 0deg, transparent 0deg, rgba(56, 189, 248, 0.18) 45deg, transparent 46deg);
+  animation: radar-spin 4s linear infinite;
+  pointer-events: none;
+}
+@keyframes radar-spin {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
