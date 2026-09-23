@@ -47,13 +47,18 @@ export default function Footer() {
           
           {/* Brand Info */}
           <div className="lg:col-span-5">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-9 h-9 rounded-xl bg-cyan-500/10 border border-cyan-400/40 flex items-center justify-center p-1.5 shadow-[0_0_15px_rgba(56,189,248,0.3)]">
-                <img src="/shield-nebula.svg" alt="Nébula Shield" className="w-full h-full object-contain" />
+            <div className="flex items-center gap-3.5 mb-4">
+              <div className="w-12 h-12 rounded-xl bg-slate-900 border border-cyan-400/30 flex items-center justify-center p-1.5 shadow-[0_0_20px_rgba(56,189,248,0.25)]">
+                <img src="/shield-nebula.png" alt="NEBULA Shield" className="w-full h-full object-contain filter drop-shadow-[0_0_8px_rgba(56,189,248,0.4)]" />
               </div>
-              <span className="font-heading font-black text-xl text-white tracking-wider">
-                NÉBULA
-              </span>
+              <div className="flex flex-col">
+                <span className="font-heading font-black text-xl text-white tracking-wider">
+                  NEBULA
+                </span>
+                <span className="text-[10px] font-bold tracking-widest text-cyan-400 uppercase -mt-0.5">
+                  Seguridad Inteligente
+                </span>
+              </div>
             </div>
             <p className="text-xs sm:text-sm text-slate-400 leading-relaxed mb-6 max-w-sm">
               Sistema de monitoreo táctico proactivo nocturno con disuasión por voz en vivo y 

@@ -18,21 +18,21 @@ export default function Navbar() {
       <div className="container-custom pt-3 pb-2">
         <nav className="glass-panel rounded-2xl px-4 lg:px-6 py-3 flex items-center justify-between border border-cyan-500/20 bg-slate-950/80 shadow-[0_8px_32px_rgba(0,0,0,0.6)]">
           {/* Logo Brand */}
-          <a href="#" className="flex items-center gap-3 group text-decoration-none">
-            <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-400/40 group-hover:border-cyan-400 transition-colors shadow-[0_0_15px_rgba(56,189,248,0.25)]">
-              <img src="/shield-nebula.svg" alt="Nébula Shield" className="w-7 h-7 object-contain" />
+          <a href="#" className="flex items-center gap-3.5 group text-decoration-none">
+            <div className="relative flex items-center justify-center w-11 h-11 md:w-12 md:h-12 rounded-xl bg-slate-900/90 border border-cyan-400/30 group-hover:border-cyan-400 p-1.5 transition-all shadow-[0_0_20px_rgba(56,189,248,0.2)] group-hover:shadow-[0_0_25px_rgba(56,189,248,0.4)]">
+              <img src="/shield-nebula.png" alt="NEBULA Logo" className="w-full h-full object-contain filter drop-shadow-[0_0_8px_rgba(56,189,248,0.4)]" />
             </div>
             <div className="flex flex-col">
               <div className="flex items-center gap-2">
-                <span className="font-heading font-black text-lg md:text-xl tracking-wider text-white group-hover:text-cyan-300 transition-colors">
-                  NÉBULA
+                <span className="font-heading font-black text-xl md:text-2xl tracking-wider text-white group-hover:text-cyan-300 transition-colors">
+                  NEBULA
                 </span>
                 <span className="hidden sm:inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-mono font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
                   <span className="tactical-pulse-green"></span>
                   EN VIVO
                 </span>
               </div>
-              <span className="text-[11px] font-medium tracking-wide text-slate-400 -mt-1">
+              <span className="text-[10px] md:text-[11px] font-bold tracking-widest text-cyan-400 uppercase -mt-0.5">
                 Seguridad Inteligente
               </span>
             </div>
