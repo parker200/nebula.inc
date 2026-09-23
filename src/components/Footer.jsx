@@ -83,7 +83,7 @@ export default function Footer() {
               </li>
               <li>
                 <a href="#protocolo" className="hover:text-cyan-400 transition-colors">
-                  Protocolo de 6 Fases
+                  Protocolo de 5 Fases
                 </a>
               </li>
               <li>

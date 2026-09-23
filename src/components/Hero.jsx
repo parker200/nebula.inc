@@ -5,26 +5,20 @@ import {
   Volume2, 
   VolumeX, 
   RotateCcw, 
-  Play, 
   EyeOff, 
-  Flame, 
-  Radio, 
-  Clock, 
   Camera, 
   ChevronRight,
-  ShieldCheck,
   Zap
 } from 'lucide-react';
 import { WA_LINKS } from '../utils/whatsapp';
-import { playTacticalBeep, playAlarmPulse, playFogDischarge } from '../utils/audioEffects';
 
 export default function Hero() {
-  // Intrusion Simulation State
-  const [simState, setSimState] = useState('idle'); // 'idle' | 'breach' | 'countdown' | 'fog'
-  const [countdown, setCountdown] = useState(5);
+  // Intrusion Simulation State: 'idle' | 'playing' | 'ended'
+  const [simState, setSimState] = useState('idle');
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [currentTimeStr, setCurrentTimeStr] = useState('');
-  const timerRef = useRef(null);
+  const [videoError, setVideoError] = useState(false);
+  const videoRef = useRef(null);
 
   // Live Time in Santa Cruz (UTC-4)
   useEffect(() => {
@@ -37,47 +31,31 @@ export default function Hero() {
     return () => clearInterval(interval);
   }, []);
 
-  // Trigger Intrusion Simulation Sequence
-  const handleStartSimulation = () => {
-    if (simState !== 'idle') return;
-    
-    setSimState('breach');
-    setCountdown(5);
-    
-    if (soundEnabled) {
-      playAlarmPulse();
+  // Sync video audio with sound toggle
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.muted = !soundEnabled;
     }
+  }, [soundEnabled]);
 
-    // After 1 second of breach alarm, start countdown
-    setTimeout(() => {
-      setSimState('countdown');
-      let count = 5;
-      
-      const interval = setInterval(() => {
-        count -= 1;
-        setCountdown(count);
-        
-        if (soundEnabled && count > 0) {
-          playTacticalBeep(700 + (5 - count) * 80, 0.08);
-        }
-
-        if (count <= 0) {
-          clearInterval(interval);
-          setSimState('fog');
-          if (soundEnabled) {
-            playFogDischarge();
-          }
-        }
-      }, 900);
-
-      timerRef.current = interval;
-    }, 1000);
+  // Trigger Video Playback on Simulation
+  const handleStartSimulation = () => {
+    setSimState('playing');
+    if (videoRef.current) {
+      videoRef.current.currentTime = 0;
+      videoRef.current.muted = !soundEnabled;
+      videoRef.current.play().catch(err => {
+        console.warn("Reproducción asistida:", err);
+      });
+    }
   };
 
   const handleResetSimulation = () => {
-    if (timerRef.current) clearInterval(timerRef.current);
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
+    }
     setSimState('idle');
-    setCountdown(5);
   };
 
   return (
@@ -163,9 +141,9 @@ export default function Hero() {
           {/* Right Column: Interactive Intrusion Simulator with Restrained HUD Intensity */}
           <div className="lg:col-span-5 w-full">
             <div className={`relative rounded-2xl glass-panel p-5 sm:p-6 border transition-all duration-300 ${
-              simState === 'breach' || simState === 'countdown'
+              simState === 'playing'
                 ? 'border-red-500 shadow-[0_0_30px_rgba(239,68,68,0.35)]'
-                : simState === 'fog'
+                : simState === 'ended'
                 ? 'border-cyan-400 shadow-[0_0_30px_rgba(56,189,248,0.35)]'
                 : 'border-slate-800'
             }`}>
@@ -193,112 +171,66 @@ export default function Hero() {
                 </div>
               </div>
 
-              {/* Viewport: Simulated CCTV Video Scene */}
+              {/* Viewport: Simulated CCTV Video Scene with MP4 */}
               <div className="relative h-64 sm:h-72 w-full rounded-xl overflow-hidden bg-slate-950 border border-slate-800 flex items-center justify-center">
                 
                 {/* Subtle Scanlines */}
                 <div className="absolute inset-0 scanlines z-10 pointer-events-none" />
                 <div className="absolute top-3 left-3 z-20 flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-slate-500" />
-                  <span className="font-mono text-[10px] text-slate-400 font-semibold tracking-wider">CCTV 1080P</span>
+                  <span className={`w-2 h-2 rounded-full ${simState === 'playing' ? 'bg-red-500 animate-ping' : 'bg-slate-500'}`} />
+                  <span className="font-mono text-[10px] text-slate-300 font-semibold tracking-wider">
+                    {simState === 'playing' ? 'REC ● EN VIVO' : 'CCTV 1080P'}
+                  </span>
                 </div>
 
-                {/* CCTV Mock Room Content (Store Interior) */}
-                <div className="absolute inset-0 bg-[#070b16] flex flex-col justify-between p-4 select-none">
-                  {/* Shelves & Counters representation */}
-                  <div className="flex justify-between items-start opacity-40">
-                    <div className="w-24 h-14 border border-dashed border-slate-800 rounded bg-slate-900/40 flex items-center justify-center text-[10px] text-slate-500 font-mono">
-                      VITRINA
-                    </div>
-                    <div className="w-28 h-16 border border-dashed border-slate-800 rounded bg-slate-900/40 flex items-center justify-center text-[10px] text-slate-500 font-mono text-center">
-                      CAJA
-                    </div>
-                  </div>
-
-                  {/* Intruder Silhouette when breach starts */}
-                  {(simState === 'breach' || simState === 'countdown') && (
-                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none animate-pulse">
-                      <div className="w-20 h-36 bg-red-500/20 border-2 border-red-500 rounded-full flex flex-col items-center justify-center shadow-[0_0_30px_rgba(239,68,68,0.5)]">
-                        <span className="font-mono text-[10px] text-white font-black bg-red-600 px-1 rounded -mt-2">
-                          INTRUSO
-                        </span>
-                        <div className="w-8 h-8 rounded-full border border-red-400 mt-2" />
-                      </div>
-                    </div>
-                  )}
-
-                  <div className="flex justify-between items-end opacity-40 text-[10px] font-mono text-slate-600">
-                    <div>IR: OK</div>
-                    <div>NIEBLA: LISTO</div>
-                  </div>
-                </div>
+                {/* Video Element */}
+                <video
+                  ref={videoRef}
+                  playsInline
+                  preload="auto"
+                  onEnded={() => setSimState('ended')}
+                  onError={() => setVideoError(true)}
+                  onLoadedData={() => setVideoError(false)}
+                  className={`w-full h-full object-cover transition-opacity duration-300 ${
+                    simState === 'playing' || simState === 'ended' ? 'opacity-100' : 'opacity-25'
+                  }`}
+                >
+                  <source src="/video-seguridad.mp4" type="video/mp4" />
+                  <source src="/video.mp4" type="video/mp4" />
+                  <source src="/demo.mp4" type="video/mp4" />
+                </video>
 
                 {/* STATE 1: IDLE OVERLAY */}
                 {simState === 'idle' && (
-                  <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-slate-950/40 backdrop-blur-[1px] p-6 text-center">
-                    <div className="w-12 h-12 rounded-xl bg-slate-900 border border-slate-700 flex items-center justify-center text-slate-400 mb-3">
+                  <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-slate-950/60 backdrop-blur-[2px] p-6 text-center">
+                    <div className="w-12 h-12 rounded-xl bg-slate-900/90 border border-slate-700 flex items-center justify-center text-cyan-400 mb-3 shadow-[0_0_20px_rgba(56,189,248,0.2)]">
                       <Camera className="w-6 h-6" />
                     </div>
                     <p className="text-sm font-semibold text-white mb-1">Cámara de Seguridad en Vivo</p>
                     <p className="text-xs text-slate-400 max-w-xs">
-                      Presiona el botón de abajo para ver la respuesta táctica en 5 segundos.
+                      Presiona el botón de abajo para reproducir la respuesta táctica.
                     </p>
+                    {videoError && (
+                      <span className="mt-2 text-[10px] font-mono text-cyan-300/80 bg-cyan-950/40 px-2.5 py-1 rounded border border-cyan-800/50">
+                        Copia tu video en: public/video-seguridad.mp4
+                      </span>
+                    )}
                   </div>
                 )}
 
-                {/* STATE 2: BREACH ALERT */}
-                {simState === 'breach' && (
-                  <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-red-950/70 p-4 text-center tactical-pulse-red">
-                    <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-red-600 text-white font-mono text-xs font-black tracking-widest uppercase mb-2">
-                      <ShieldAlert className="w-4 h-4 animate-bounce" />
-                      ¡INTRUSIÓN CONFIRMADA!
+                {/* STATE 2: ENDED OVERLAY */}
+                {simState === 'ended' && (
+                  <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4 text-center">
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-300 font-mono text-xs font-bold border border-cyan-400/40 mb-2">
+                      <EyeOff className="w-3.5 h-3.5" />
+                      SIMULACIÓN COMPLETADA
                     </div>
-                    <p className="text-sm font-bold text-white mb-1">
-                      Operador Nébula tomando el control por megáfono
+                    <h4 className="font-heading font-extrabold text-base sm:text-lg text-white mb-1">
+                      "SI NO VEN, NO ROBAN"
+                    </h4>
+                    <p className="text-xs text-slate-300 max-w-xs">
+                      Intrusión neutralizada con la niebla de alta densidad Nébula.
                     </p>
-                    <p className="text-xs text-red-200 font-mono">
-                      "¡Atención intruso! Estás siendo grabado y la móvil va en camino."
-                    </p>
-                  </div>
-                )}
-
-                {/* STATE 3: COUNTDOWN */}
-                {simState === 'countdown' && (
-                  <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-slate-950/75 p-4 text-center">
-                    <div className="text-xs font-mono font-bold text-red-400 tracking-wider mb-2 flex items-center gap-1.5">
-                      <Clock className="w-4 h-4 animate-spin" />
-                      ACTIVANDO NIEBLA DISUASIVA EN:
-                    </div>
-                    <div className="font-hud font-black text-6xl text-red-400">
-                      {countdown}s
-                    </div>
-                    <div className="text-xs font-mono text-slate-300 mt-2">
-                      Operador ejecutando comando remoto
-                    </div>
-                  </div>
-                )}
-
-                {/* STATE 4: DENSE FOG DISCHARGE */}
-                {simState === 'fog' && (
-                  <div className="absolute inset-0 z-30 flex flex-col items-center justify-center overflow-hidden">
-                    {/* Multilayer Dense Fog */}
-                    <div className="absolute inset-0 fog-layer-1" />
-                    <div className="absolute inset-0 fog-layer-2" />
-                    <div className="absolute inset-0 fog-layer-3" />
-                    
-                    {/* Fog Overlay Text */}
-                    <div className="relative z-40 p-4 text-center bg-slate-950/80 rounded-xl border border-cyan-400/60 shadow-2xl backdrop-blur-md max-w-[85%]">
-                      <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-300 font-mono text-xs font-bold border border-cyan-400/40 mb-2">
-                        <EyeOff className="w-3.5 h-3.5" />
-                        0% VISIBILIDAD TOTAL
-                      </div>
-                      <h4 className="font-heading font-extrabold text-base sm:text-lg text-white mb-1">
-                        "SI NO VEN, NO ROBAN"
-                      </h4>
-                      <p className="text-xs text-slate-300 font-medium">
-                        El delincuente queda ciego y desorientado en segundos, forzando su huida inmediata.
-                      </p>
-                    </div>
                   </div>
                 )}
 
@@ -327,7 +259,7 @@ export default function Hero() {
 
               {/* Status details pill */}
               <div className="mt-3 flex items-center justify-between text-[11px] font-mono text-slate-500 px-1">
-                <span>ESTADO: {simState === 'idle' ? 'VIGILANCIA EN REPOSO' : simState === 'breach' ? 'INTRUSIÓN EN CURSO' : simState === 'countdown' ? 'DESCARGA PREPARADA' : 'SATURACIÓN AL 100%'}</span>
+                <span>ESTADO: {simState === 'idle' ? 'VIGILANCIA EN REPOSO' : simState === 'playing' ? 'REPRODUCIENDO INTRUSIÓN' : 'SIMULACIÓN FINALIZADA'}</span>
                 <span className="text-slate-400">DISPERSOR: LISTO</span>
               </div>
 
