@@ -82,11 +82,6 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href="#clientes" className="hover:text-cyan-400 transition-colors">
-                  Clientes & Sectores Críticos
-                </a>
-              </li>
-              <li>
                 <a href="#planes" className="hover:text-cyan-400 transition-colors">
                   Planes de Seguridad (Vista & Total)
                 </a>

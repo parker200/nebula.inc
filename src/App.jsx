@@ -3,7 +3,6 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Comparison from './components/Comparison';
 import Protocol from './components/Protocol';
-import TargetClients from './components/TargetClients';
 import PricingPlans from './components/PricingPlans';
 import Calculator from './components/Calculator';
 import FAQ from './components/FAQ';
@@ -25,9 +24,6 @@ export default function App() {
 
         {/* 6-Phase Tactical Intervention Protocol */}
         <Protocol />
-
-        {/* Target Sectors in Santa Cruz */}
-        <TargetClients />
 
         {/* Transparent Pricing Plans (Vista & Total) */}
         <PricingPlans />

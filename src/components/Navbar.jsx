@@ -8,7 +8,6 @@ export default function Navbar() {
   const navItems = [
     { label: 'Diferenciación', href: '#diferenciacion' },
     { label: 'Protocolo Táctico', href: '#protocolo' },
-    { label: 'Clientes', href: '#clientes' },
     { label: 'Planes', href: '#planes' },
     { label: 'Calculadora m³', href: '#calculadora' },
     { label: 'FAQ', href: '#faq' },
